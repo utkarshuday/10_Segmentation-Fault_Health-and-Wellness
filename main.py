@@ -1,9 +1,13 @@
+import os
 import requests
 import telebot
 
-BOT_TOKEN = "8010083364:AAHP1B1cLk7kL0a7eEx3zAzSomnCBD0zHYw"
+from dotenv import load_dotenv, dotenv_values
+load_dotenv()
+
+BOT_TOKEN = (os.getenv("BOT_TOKEN"))
 API_URL = "https://api-inference.huggingface.co/models/cardiffnlp/twitter-roberta-base-sentiment-latest"
-headers = {"Authorization": "Bearer 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"}
+headers = {"Authorization": f"Bearer {os.getenv("HUGGING_FACE_TOKEN")}"}
 
 bot = telebot.TeleBot(BOT_TOKEN)
 

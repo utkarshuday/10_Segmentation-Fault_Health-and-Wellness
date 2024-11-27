@@ -12,6 +12,6 @@ def sentiment_analysis(message):
     response = requests.post(API_URL, headers=headers, json=payload)
     json = response.json()
     tone = json[0][0]['label']
-    return f"This text has a tone of *{tone}*"
+    return f"This text has a tone of *{tone}*", json
   except:
     return "Some error occurred"

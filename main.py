@@ -1,20 +1,25 @@
 import os
-import requests
 import telebot
 
-from dotenv import load_dotenv, dotenv_values
+from dotenv import load_dotenv
+from sentiments import sentiment_analysis
+
 load_dotenv()
 
-BOT_TOKEN = (os.getenv("BOT_TOKEN"))
-API_URL = "https://api-inference.huggingface.co/models/cardiffnlp/twitter-roberta-base-sentiment-latest"
-headers = {"Authorization": f"Bearer {os.getenv("HUGGING_FACE_TOKEN")}"}
+BOT_TOKEN = os.getenv("BOT_TOKEN")
 
 bot = telebot.TeleBot(BOT_TOKEN)
 
 
-@bot.message_handler(commands=['start', 'hello'])
-def send_welcome(message):
-  bot.reply_to(message, "Hello autistic peeps, how can I help?")
+@bot.message_handler(commands=['start'])
+def send_intro(message):
+  bot.reply_to(
+      message,
+      "Hello! 👋 I'm a Bot to help you communicate.\n"
+      "I can help identify the tone of a conversation and reply appropriately.\n"
+      "For example, I might detect if a message is positive, negative, or neutral.\n\n"
+      "Start exploring! 😊"
+  )
 
 
 @bot.message_handler(func=lambda msg: True)
@@ -22,20 +27,5 @@ def echo_all(message):
   text = sentiment_analysis(message)
   bot.reply_to(message, text)
 
-
-def sentiment_analysis(message):
-  payload = {"inputs": message.text}
-  response = requests.post(API_URL, headers=headers, json=payload)
-  return response.text
-
-
-# text = "ngl, she has the gyatt"
-# result = sentiment_analysis(text)
-# print(result)
-
-
-# def query(payload):
-#   response = requests.post(API_URL, headers=headers, json=payload)
-#   return response.json()
 
 bot.infinity_polling()

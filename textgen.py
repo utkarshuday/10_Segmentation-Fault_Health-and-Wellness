@@ -19,8 +19,10 @@ def generate_dynamic_response(input_text, emotions):
   primary_emotion = max(emotions, key=lambda x: x["score"])["label"]
 
   # Customize the response generation prompt dynamically based on the detected emotion
-  user_prompt = f"""Respond in an {
-      primary_emotion} tone. {input_text}"""
+  # user_prompt = f"""Respond in an {
+  #     primary_emotion} tone. {input_text}"""
+  user_prompt = f"""The user is experiencing {
+      primary_emotion}. Respond in a way that acknowledges and connects with this emotion. Offer a thoughtful and empathetic reply to the following input: {input_text}."""
 
   # Generate response using Hugging Face model
   payload = {
